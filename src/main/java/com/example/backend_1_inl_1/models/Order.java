@@ -13,6 +13,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private LocalDate orderDate;
+
     @OneToOne
     @JoinColumn
     private Item item;
