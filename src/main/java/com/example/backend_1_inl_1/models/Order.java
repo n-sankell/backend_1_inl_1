@@ -18,7 +18,4 @@ public class Order {
     @JoinColumn
     private Item item;
 
-    @ManyToOne
-    @JoinColumn
-    private Customer customer;
 }

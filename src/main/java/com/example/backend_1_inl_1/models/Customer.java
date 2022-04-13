@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,4 +18,7 @@ public class Customer {
     private String address;
     private LocalDate birthDate;
 
+    @OneToMany
+    @JoinColumn
+    private List<Order> orders;
 }
