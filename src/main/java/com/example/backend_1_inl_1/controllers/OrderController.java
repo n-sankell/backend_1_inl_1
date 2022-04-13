@@ -15,6 +15,7 @@ public class OrderController {
 
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
     CustomerRepository customerRepository;
 
     @RequestMapping()
