@@ -32,7 +32,7 @@ public class CustomerController {
     }
 
     @PostMapping()
-    @CrossOrigin (origins = "http://127.0.0.1:5500")
+    @CrossOrigin(origins = "https://n-sankell.github.io")
     public Response<?> addCustomer(@RequestBody Customer customer) {
         System.out.println(customer);
         return new Response<>(customer.getName());
