@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,5 +21,18 @@ public class Customer {
 
     @OneToMany
     @JoinColumn
-    private List<Order> orders;
+    private List<ItemOrder> itemOrders = new ArrayList<>();
+
+    public Customer(){};
+
+    public Customer(String name, String email, String address, LocalDate birthDate) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.birthDate = birthDate;
+    }
+
+    public void addOrder(ItemOrder order) {
+        itemOrders.add(order);
+    }
 }

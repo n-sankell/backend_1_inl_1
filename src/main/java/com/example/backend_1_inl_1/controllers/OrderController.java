@@ -1,6 +1,6 @@
 package com.example.backend_1_inl_1.controllers;
 
-import com.example.backend_1_inl_1.models.Order;
+import com.example.backend_1_inl_1.models.ItemOrder;
 import com.example.backend_1_inl_1.models.Response;
 import com.example.backend_1_inl_1.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class OrderController {
     OrderRepository orderRepository;
 
     @RequestMapping()
-    public Response<Iterable<Order>>  getAllOrders() {
+    public Response<Iterable<ItemOrder>> getAllOrders() {
         return new Response<>(orderRepository.findAll());
     }
 

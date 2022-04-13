@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-public class Order {
+public class ItemOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,5 +17,12 @@ public class Order {
     @OneToOne
     @JoinColumn
     private Item item;
+
+    public ItemOrder(){};
+
+    public ItemOrder(LocalDate orderDate, Item item) {
+        this.orderDate = orderDate;
+        this.item = item;
+    }
 
 }

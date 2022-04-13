@@ -21,4 +21,13 @@ public class Item {
     private String genre;
     private int albumLength;
 
+    public Item(){}
+
+    public Item(String albumName, String artist, LocalDate releaseDate, String genre, int albumLength) {
+        this.albumName = albumName;
+        this.artist = artist;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+        this.albumLength = albumLength;
+    }
 }
