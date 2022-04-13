@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
 
-    @RequestMapping("/customers")
+    @RequestMapping()
     public Response<Iterable<Customer>> getAllCustomers() {
         return new Response<>(customerRepository.findAll());
     }
 
-    @RequestMapping("/customers/id")
-    public Customer getCustomerById(@RequestParam Long id) {
-        return customerRepository.findById(id).isPresent() ? customerRepository.findById(id).get() : new Customer();
+    @RequestMapping("id")
+    public <T> Response<?> getCustomerById(@RequestParam Long id) {
+        return customerRepository.findById(id).isPresent() ? new Response<>(customerRepository.findById(id).get()) : new Response<>("Customer not found.");
     }
 
 }
