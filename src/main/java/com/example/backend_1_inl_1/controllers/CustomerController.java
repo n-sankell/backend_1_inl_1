@@ -4,9 +4,7 @@ import com.example.backend_1_inl_1.models.Customer;
 import com.example.backend_1_inl_1.models.Response;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -31,6 +29,13 @@ public class CustomerController {
             e.printStackTrace();
             return new Response<>("Please provide a valid number.");
         }
+    }
+
+    @PostMapping()
+    @CrossOrigin (origins = "http://127.0.0.1:5500")
+    public Response<?> addCustomer(@RequestBody Customer customer) {
+        System.out.println(customer);
+        return new Response<>(customer.getName());
     }
 
 }
