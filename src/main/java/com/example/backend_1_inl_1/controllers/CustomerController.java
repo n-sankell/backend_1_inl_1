@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customers")
+@CrossOrigin(origins = "https://n-sankell.github.io")
 public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
 
-    @RequestMapping()
+    @GetMapping()
     public Response<Iterable<Customer>> getAllCustomers() {
         return new Response<>(customerRepository.findAll());
     }
 
-    @RequestMapping("{id}")
+    @GetMapping("{id}")
     public Response<?> getCustomerById(@PathVariable String id) {
         try {
             long parsedId = Long.parseLong(id);
@@ -32,10 +33,10 @@ public class CustomerController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "https://n-sankell.github.io")
     public Response<?> addCustomer(@RequestBody Customer customer) {
-        System.out.println(customer);
-        return new Response<>(customer.getName());
+        System.out.println(customer.getName());
+        customerRepository.save(customer);
+        return new Response<>("New customer "+customer.getName()+" was added");
     }
 
 }
