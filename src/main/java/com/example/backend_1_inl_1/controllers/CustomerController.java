@@ -6,6 +6,9 @@ import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/customers")
 @CrossOrigin(origins = "https://n-sankell.github.io")
@@ -34,9 +37,20 @@ public class CustomerController {
 
     @PostMapping()
     public Response<?> addCustomer(@RequestBody Customer customer) {
-        System.out.println(customer.getName());
+        return checkCustomer(customer)
+                ? new Response<>("Email is already in use!")
+                : new Response<>("New customer "+customer.getName()+" was added");
+    }
+
+    private boolean checkCustomer(Customer customer) {
+        List<Customer> customers = new ArrayList<>();
+        customerRepository.findAll().forEach(customers::add);
+        return customers.stream().anyMatch(c -> customer.getEmail().equals(c.getEmail())) || saveCustomer(customer);
+    }
+
+    private boolean saveCustomer(Customer customer) {
         customerRepository.save(customer);
-        return new Response<>("New customer "+customer.getName()+" was added");
+        return false;
     }
 
 }
