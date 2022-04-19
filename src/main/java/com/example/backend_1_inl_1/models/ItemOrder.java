@@ -25,4 +25,9 @@ public class ItemOrder {
         this.item = item;
     }
 
+    public ItemOrder(long id, LocalDate orderDate, Item item) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.item = item;
+    }
 }

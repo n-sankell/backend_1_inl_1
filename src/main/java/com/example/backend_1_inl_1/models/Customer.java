@@ -35,4 +35,12 @@ public class Customer {
     public void addOrder(ItemOrder order) {
         itemOrders.add(order);
     }
+
+    public Customer(long id, String name, String email, String address, LocalDate birthDate) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.birthDate = birthDate;
+    }
 }

@@ -49,7 +49,7 @@ public class ItemController {
 
     @PostMapping("/buy")
     public Response<String>buyItem(@RequestBody Purchase purchase) {
-        if (customerRepository.existsById(purchase.customerId()) && itemRepository.existsById(purchase.itemId())) {
+        if (customerRepository.findById(purchase.customerId()).isPresent() && itemRepository.findById(purchase.itemId()).isPresent()) {
             ItemOrder newOrder = new ItemOrder(LocalDate.now(), itemRepository.findById(purchase.itemId()).get());
             Customer customer = customerRepository.findById(purchase.customerId()).get();
             orderRepository.save(newOrder);
@@ -64,7 +64,6 @@ public class ItemController {
             return new Response<>("No product or customer was found.");
         }
     }
-
 
 }
 
