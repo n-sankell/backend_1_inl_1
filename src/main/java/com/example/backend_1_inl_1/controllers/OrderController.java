@@ -5,10 +5,7 @@ import com.example.backend_1_inl_1.models.Response;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
@@ -20,12 +17,12 @@ public class OrderController {
     @Autowired
     CustomerRepository customerRepository;
 
-    @RequestMapping()
+    @GetMapping()
     public Response<Iterable<ItemOrder>> getAllOrders() {
         return new Response<>(orderRepository.findAll());
     }
 
-    @RequestMapping("{id}")
+    @GetMapping("{id}")
     public Response<?> getOrdersByCustomerId(@PathVariable String id) {
         try {
             long parsedId = Long.parseLong(id);
