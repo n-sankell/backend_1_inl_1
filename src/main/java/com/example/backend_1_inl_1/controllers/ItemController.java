@@ -4,10 +4,7 @@ import com.example.backend_1_inl_1.models.Item;
 import com.example.backend_1_inl_1.models.Response;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/items")
@@ -34,6 +31,13 @@ public class ItemController {
             return new Response<>("Please provide a valid number.");
         }
     }
+
+    @PostMapping()
+    public Response<String> addItem(@RequestBody Item item) {
+        itemRepository.save(item);
+        return new Response<>(item.getAlbumName() + "Was added to the database.");
+    }
+
 }
 
 

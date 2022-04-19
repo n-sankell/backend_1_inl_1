@@ -36,7 +36,7 @@ public class CustomerController {
     }
 
     @PostMapping()
-    public Response<?> addCustomer(@RequestBody Customer customer) {
+    public Response<String> addCustomer(@RequestBody Customer customer) {
         return checkCustomer(customer)
                 ? new Response<>("Email is already in use!")
                 : new Response<>("New customer "+customer.getName()+" was added");

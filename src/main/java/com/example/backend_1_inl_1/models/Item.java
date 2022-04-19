@@ -30,4 +30,13 @@ public class Item {
         this.genre = genre;
         this.albumLength = albumLength;
     }
+
+    public Item(long id, String albumName, String artist, LocalDate releaseDate, String genre, int albumLength) {
+        this.id = id;
+        this.albumName = albumName;
+        this.artist = artist;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+        this.albumLength = albumLength;
+    }
 }
