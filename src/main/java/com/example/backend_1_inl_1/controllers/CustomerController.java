@@ -37,20 +37,12 @@ public class CustomerController {
 
     @PostMapping()
     public Response<String> addCustomer(@RequestBody Customer customer) {
-        return checkCustomer(customer)
-                ? new Response<>("Email is already in use!")
-                : new Response<>("New customer "+customer.getName()+" was added");
-    }
-
-    private boolean checkCustomer(Customer customer) {
-        List<Customer> customers = new ArrayList<>();
-        customerRepository.findAll().forEach(customers::add);
-        return customers.stream().anyMatch(c -> customer.getEmail().equals(c.getEmail())) || saveCustomer(customer);
-    }
-
-    private boolean saveCustomer(Customer customer) {
-        customerRepository.save(customer);
-        return false;
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            return new Response<>("Email is already in use!");
+        } else {
+            customerRepository.save(customer);
+            return new Response<>("New customer " + customer.getName() + " was added");
+        }
     }
 
 }
