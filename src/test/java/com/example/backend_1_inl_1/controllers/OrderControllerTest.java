@@ -1,15 +1,14 @@
 package com.example.backend_1_inl_1.controllers;
 
-import com.example.backend_1_inl_1.models.Customer;
-import com.example.backend_1_inl_1.models.Item;
-import com.example.backend_1_inl_1.models.ItemOrder;
+import com.example.backend_1_inl_1.model.Customer;
+import com.example.backend_1_inl_1.model.Item;
+import com.example.backend_1_inl_1.model.ItemOrder;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
 
 import com.example.backend_1_inl_1.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -48,7 +47,7 @@ class OrderControllerTest {
 
 
     @BeforeEach
-    void init(){
+    void setMockMvc() {
         Customer customer1 = new Customer(1,"Eva","evaave@gmail.com","Lilla sällskapets väg 57", LocalDate.of(1965,3,15));
         Customer customer2 = new Customer(2,"Olle","ollis@gmail.com","Kungsgatan 34", LocalDate.of(1948,8,22));
 
@@ -69,8 +68,10 @@ class OrderControllerTest {
         when(mockItemRepository.findById(2L)).thenReturn(Optional.of(item2));
         when(mockItemRepository.findById(3L)).thenReturn(Optional.of(item3));
         when(mockItemRepository.findById(4L)).thenReturn(Optional.of(item4));
+
         when(mockCustomerRepository.findById(1L)).thenReturn(Optional.of(customer1));
         when(mockCustomerRepository.findById(2L)).thenReturn(Optional.of(customer2));
+
         when(mockOrderRepository.findById(1L)).thenReturn(Optional.of(order1));
         when(mockOrderRepository.findById(2L)).thenReturn(Optional.of(order2));
         when(mockOrderRepository.findById(3L)).thenReturn(Optional.of(order3));
@@ -83,9 +84,10 @@ class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", hasSize(3)))
-                .andExpect(content().json("{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}},{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}},{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
+                .andExpect(content().json("{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                                                                   "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                                                                   "{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
     }
-
 
     @Test
     void getOrdersByCustomerId() throws Exception {
@@ -93,7 +95,7 @@ class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}},{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
-
+                        "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                                                 "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
     }
 }

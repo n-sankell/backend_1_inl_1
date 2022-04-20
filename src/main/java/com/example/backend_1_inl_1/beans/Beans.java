@@ -1,10 +1,12 @@
-package com.example.backend_1_inl_1.models;
+package com.example.backend_1_inl_1.beans;
 
+import com.example.backend_1_inl_1.model.Customer;
+import com.example.backend_1_inl_1.model.Item;
+import com.example.backend_1_inl_1.model.ItemOrder;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
 import com.example.backend_1_inl_1.repositories.OrderRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 

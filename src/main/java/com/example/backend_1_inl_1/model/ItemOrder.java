@@ -1,4 +1,4 @@
-package com.example.backend_1_inl_1.models;
+package com.example.backend_1_inl_1.model;
 
 import lombok.Data;
 
@@ -18,7 +18,7 @@ public class ItemOrder {
     @JoinColumn
     private Item item;
 
-    public ItemOrder(){};
+    public ItemOrder() {};
 
     public ItemOrder(LocalDate orderDate, Item item) {
         this.orderDate = orderDate;

@@ -1,14 +1,11 @@
 package com.example.backend_1_inl_1.controllers;
 
-import com.example.backend_1_inl_1.models.Customer;
-import com.example.backend_1_inl_1.models.Item;
+import com.example.backend_1_inl_1.model.Customer;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
-import com.example.backend_1_inl_1.repositories.ItemRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -60,13 +57,14 @@ class CustomerControllerTest {
                 .andExpect(content().json("{response:[{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]},{\"id\":2,\"name\":\"Olle\",\"email\":\"ollis@gmail.com\",\"address\":\"Kungsgatan 34\",\"birthDate\":\"1948-08-22\",\"itemOrders\":[]},{\"id\":3,\"name\":\"Adam\",\"email\":\"adams@gmail.com\",\"address\":\"Johannesvägen 23\",\"birthDate\":\"1975-05-23\",\"itemOrders\":[]}]}"));
     }
 
-
-
     @Test
     void getCustomerById() {
+
     }
 
     @Test
     void addCustomer() {
+
     }
+
 }

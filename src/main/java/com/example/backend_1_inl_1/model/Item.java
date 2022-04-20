@@ -1,4 +1,4 @@
-package com.example.backend_1_inl_1.models;
+package com.example.backend_1_inl_1.model;
 
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class Item {
     private String genre;
     private int albumLength;
 
-    public Item(){}
+    public Item() {}
 
     public Item(String albumName, String artist, LocalDate releaseDate, String genre, int albumLength) {
         this.albumName = albumName;
