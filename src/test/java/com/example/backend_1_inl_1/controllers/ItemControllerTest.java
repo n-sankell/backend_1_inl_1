@@ -4,15 +4,12 @@ import com.example.backend_1_inl_1.dto.Purchase;
 import com.example.backend_1_inl_1.dto.ResponsMessage;
 import com.example.backend_1_inl_1.model.Customer;
 import com.example.backend_1_inl_1.model.Item;
-import com.example.backend_1_inl_1.model.ItemOrder;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
 
-import com.example.backend_1_inl_1.repositories.OrderRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,10 +44,6 @@ class ItemControllerTest {
     @MockBean
     @Autowired
     private CustomerRepository mockCustomerRepository;
-
-    @MockBean
-    @Autowired
-    private OrderRepository mockOrderRepository;
 
     @BeforeEach
     public void setMockMvc() {

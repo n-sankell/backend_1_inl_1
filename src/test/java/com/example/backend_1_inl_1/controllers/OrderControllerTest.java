@@ -1,12 +1,13 @@
 package com.example.backend_1_inl_1.controllers;
 
+import com.example.backend_1_inl_1.dto.ResponsMessage;
 import com.example.backend_1_inl_1.model.Customer;
 import com.example.backend_1_inl_1.model.Item;
 import com.example.backend_1_inl_1.model.ItemOrder;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
-
 import com.example.backend_1_inl_1.repositories.OrderRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -84,9 +85,10 @@ class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", hasSize(3)))
-                .andExpect(content().json("{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
-                                                                   "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
-                                                                   "{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
+                .andExpect(content().json(
+                        "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                                                 "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                                                 "{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
     }
 
     @Test
@@ -98,4 +100,21 @@ class OrderControllerTest {
                         "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
                                                  "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
     }
+
+    @Test
+    void getOrdersByCustomerIdFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/9")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage())));
+    }
+
+    @Test
+    void getOrdersByCustomerIdParseFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/x")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
+    }
+
 }

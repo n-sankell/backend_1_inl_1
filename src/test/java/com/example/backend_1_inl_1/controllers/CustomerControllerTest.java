@@ -54,7 +54,10 @@ class CustomerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", hasSize(3)))
-                .andExpect(content().json("{response:[{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]},{\"id\":2,\"name\":\"Olle\",\"email\":\"ollis@gmail.com\",\"address\":\"Kungsgatan 34\",\"birthDate\":\"1948-08-22\",\"itemOrders\":[]},{\"id\":3,\"name\":\"Adam\",\"email\":\"adams@gmail.com\",\"address\":\"Johannesvägen 23\",\"birthDate\":\"1975-05-23\",\"itemOrders\":[]}]}"));
+                .andExpect(content().json(
+                        "{response:[{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]}," +
+                                             "{\"id\":2,\"name\":\"Olle\",\"email\":\"ollis@gmail.com\",\"address\":\"Kungsgatan 34\",\"birthDate\":\"1948-08-22\",\"itemOrders\":[]}," +
+                                             "{\"id\":3,\"name\":\"Adam\",\"email\":\"adams@gmail.com\",\"address\":\"Johannesvägen 23\",\"birthDate\":\"1975-05-23\",\"itemOrders\":[]}]}"));
     }
 
     @Test
