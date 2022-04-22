@@ -8,10 +8,10 @@ public enum ResponsMessage {
     ORDER_COMPLETE("Purchase complete."),
     PRODUCT_NOT_FOUND("Product was not found."),
     CUSTOMER_NOT_FOUND("Customer was not found."),
-    NOTHING_FOUND("No product and no customer was found."),
+    NOTHING_FOUND("Product and customer was not found."),
 
-    EMAIL_IN_USE("Email is already in use!"),
-    CUSTOMER_ADDED(" was added as a new customer");
+    EMAIL_IN_USE("Email is already in use."),
+    CUSTOMER_ADDED(" was added as a new customer.");
 
     private final String message;
 
@@ -24,4 +24,3 @@ public enum ResponsMessage {
     }
 
 }
-

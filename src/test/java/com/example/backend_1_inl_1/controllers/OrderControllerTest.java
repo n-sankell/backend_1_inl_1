@@ -86,9 +86,11 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", hasSize(3)))
                 .andExpect(content().json(
-                        "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
-                                                 "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
-                                                 "{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
+                "{response:[" +
+                          "{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                          "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                          "{\"id\":3,\"orderDate\":\"2022-12-07\",\"item\":{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}" +
+                          "]}"));
     }
 
     @Test
@@ -97,8 +99,10 @@ class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        "{\"response\":[{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
-                                                 "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}]}"));
+                "{response:[" +
+                          "{\"id\":1,\"orderDate\":\"2021-06-13\",\"item\":{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}," +
+                          "{\"id\":2,\"orderDate\":\"2022-03-05\",\"item\":{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}" +
+                          "]}"));
     }
 
     @Test
@@ -111,7 +115,7 @@ class OrderControllerTest {
 
     @Test
     void getOrdersByCustomerIdParseFail() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/orders/x")
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));

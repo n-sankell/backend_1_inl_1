@@ -74,9 +74,11 @@ class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", hasSize(3)))
                 .andExpect(content().json(
-                "{\"response\": [{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}, " +
-                                          "{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}, " +
-                                          "{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}]}"));
+                "{response:[" +
+                          "{\"id\": 1, \"albumName\": \"AlbumOne\", \"artist\": \"ArtistOne\", \"releaseDate\": \"1981-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}, " +
+                          "{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}, " +
+                          "{\"id\": 3, \"albumName\": \"AlbumThree\", \"artist\": \"ArtistThree\", \"releaseDate\": \"1983-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}" +
+                          "]}"));
     }
 
     @Test
@@ -85,7 +87,9 @@ class ItemControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        "{\"response\": {\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}}"));
+                "{response:" +
+                          "{\"id\": 2, \"albumName\": \"AlbumTwo\", \"artist\": \"ArtistTwo\", \"releaseDate\": \"1982-06-04\", \"genre\": \"Visor\", \"albumLength\": 46}" +
+                          "}"));
     }
 
     @Test
@@ -98,7 +102,7 @@ class ItemControllerTest {
 
     @Test
     void getItemByIdParseFail() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/items/h")
+        mockMvc.perform(MockMvcRequestBuilders.get("/items/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
