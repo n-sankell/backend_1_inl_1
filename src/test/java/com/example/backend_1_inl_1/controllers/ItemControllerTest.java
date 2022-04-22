@@ -118,10 +118,6 @@ class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
                 .andExpect(jsonPath("$.response", is(item4.getAlbumName() + ResponsMessage.PRODUCT_ADDED.getMessage())));
-
-        Item result = mockItemRepository.findById(4L).isPresent() ? mockItemRepository.findById(4L).get() : null;
-        assert(result != null);
-        assert(result.equals(item4));
     }
 
     @Test

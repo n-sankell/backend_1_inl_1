@@ -1,5 +1,6 @@
 package com.example.backend_1_inl_1.controllers;
 
+import com.example.backend_1_inl_1.dto.ResponsMessage;
 import com.example.backend_1_inl_1.model.Customer;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 
@@ -45,6 +46,7 @@ class CustomerControllerTest {
         when(mockCustomerRepository.findById(1L)).thenReturn(Optional.of(customer1));
         when(mockCustomerRepository.findById(2L)).thenReturn(Optional.of(customer2));
         when(mockCustomerRepository.findById(3L)).thenReturn(Optional.of(customer3));
+        when(mockCustomerRepository.existsByEmail(customer1.getEmail())).thenReturn(true);
         when(mockCustomerRepository.findAll()).thenReturn(Arrays.asList(customer1,customer2,customer3));
     }
 
@@ -63,13 +65,53 @@ class CustomerControllerTest {
     }
 
     @Test
-    void getCustomerById() {
-
+    void getCustomerById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{response:" +
+                "{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]}}"));
     }
 
     @Test
-    void addCustomer() {
+    void failCustomerById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/4")
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage())));
+    }
 
+    @Test
+    void parseFailCustomerById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/WRONG")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
+    }
+
+
+    @Test
+    void addCustomer() throws Exception{
+        Customer customer4 = new Customer(4,"Edith", "edith@email.com", "Johanneshovsvägen 135", LocalDate.of(1964,6,13));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/customers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer4)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", notNullValue()))
+                .andExpect(jsonPath("$.response", is(customer4.getName() + ResponsMessage.CUSTOMER_ADDED.getMessage())));
+    }
+
+    @Test
+    void emailInUseAddCustomer() throws Exception{
+        Customer customer4 = new Customer(5,"Edith", "evaave@gmail.com", "Johanneshovsvägen 135", LocalDate.of(1964,6,13));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/customers/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer4)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", notNullValue()))
+                .andExpect(jsonPath("$.response", is(ResponsMessage.EMAIL_IN_USE.getMessage())));
     }
 
 }
