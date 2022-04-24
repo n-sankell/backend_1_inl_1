@@ -17,11 +17,11 @@ public final class ResponsMessage {
     public static final String EMAIL_IN_USE = "Email is already in use.";
 
     public static String productAdded(Item item) {
-        return "Product '" + item.getArtist() + " - " + item.getAlbumName() + "' was added to the database.";
+        return "Product '" + item.toString() + "' was added to the database.";
     }
 
     public static String productDeleted(Item item) {
-        return "Product '" + item.getArtist() + " - " + item.getAlbumName() + "' was deleted from the database.";
+        return "Product '" + item.toString() + "' was deleted from the database.";
     }
 
     public static String customerAdded(Customer customer) {
