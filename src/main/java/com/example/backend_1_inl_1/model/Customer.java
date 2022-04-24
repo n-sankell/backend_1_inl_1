@@ -1,6 +1,7 @@
 package com.example.backend_1_inl_1.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Customer {
 
     @Id
@@ -22,8 +24,6 @@ public class Customer {
     @OneToMany
     @JoinColumn
     private List<ItemOrder> itemOrders = new ArrayList<>();
-
-    public Customer() {};
 
     public Customer(String name, String email, String address, LocalDate birthDate) {
         this.name = name;

@@ -110,7 +110,7 @@ class OrderControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/orders/9")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND)));
     }
 
     @Test
@@ -118,7 +118,31 @@ class OrderControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/orders/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
+    }
+
+    @Test
+    void deleteOrderById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/delete/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.ORDER_DELETED)));
+    }
+
+    @Test
+    void deleteOrderByIdFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/delete/9")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.ORDER_NOT_FOUND)));
+    }
+
+    @Test
+    void deleteOrderByIdParseFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/delete/WRONG")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
     }
 
 }

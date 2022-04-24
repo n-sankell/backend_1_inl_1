@@ -29,10 +29,27 @@ public class OrderController {
             long parsedId = Long.parseLong(id);
             return customerRepository.findById(parsedId).isPresent()
                     ? new Response<>(customerRepository.findById(parsedId).get().getItemOrders())
-                    : new Response<>(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage());
+                    : new Response<>(ResponsMessage.CUSTOMER_NOT_FOUND);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return new Response<>(ResponsMessage.NOT_A_NUMBER.getMessage());
+            return new Response<>(ResponsMessage.NOT_A_NUMBER);
+        }
+    }
+
+    @GetMapping("/delete/{id}")
+    public Response<String> deleteOrderById(@PathVariable String id) {
+        try {
+            long parsedId = Long.parseLong(id);
+            if (orderRepository.findById(parsedId).isPresent()) {
+                ItemOrder foundOrder = orderRepository.findById(parsedId).get();
+                orderRepository.delete(foundOrder);
+                return new Response<>(ResponsMessage.ORDER_DELETED);
+            } else {
+                return new Response<>(ResponsMessage.ORDER_NOT_FOUND);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return new Response<>(ResponsMessage.NOT_A_NUMBER);
         }
     }
 

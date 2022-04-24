@@ -67,28 +67,29 @@ class CustomerControllerTest {
     @Test
     void getCustomerById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/1")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{response:" +
-                "{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]}}"));
+                .andExpect(content().json(
+                "{response:" +
+                          "{\"id\":1,\"name\":\"Eva\",\"email\":\"evaave@gmail.com\",\"address\":\"Lilla sällskapets väg 57\",\"birthDate\":\"1965-03-15\",\"itemOrders\":[]}" +
+                          "}"));
     }
 
     @Test
-    void failCustomerById() throws Exception {
+    void getCustomerByIdFail() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/4")
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND)));
     }
 
     @Test
-    void parseFailCustomerById() throws Exception {
+    void getCustomerByIdParseFail() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
     }
-
 
     @Test
     void addCustomer() throws Exception{
@@ -99,11 +100,11 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customer4)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(customer4.getName() + ResponsMessage.CUSTOMER_ADDED.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.customerAdded(customer4))));
     }
 
     @Test
-    void emailInUseAddCustomer() throws Exception{
+    void addCustomerEmailInUse() throws Exception{
         Customer customer4 = new Customer(5,"Edith", "evaave@gmail.com", "Johanneshovsvägen 135", LocalDate.of(1964,6,13));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/customers/")
@@ -111,7 +112,33 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customer4)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(ResponsMessage.EMAIL_IN_USE.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.EMAIL_IN_USE)));
+    }
+
+    @Test
+    void deleteCustomerById() throws Exception {
+        Customer customer3 = new Customer(3,"Adam","adams@gmail.com","Johannesvägen 23", LocalDate.of(1975,5,23));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/delete/3")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.customerDeleted(customer3))));
+    }
+
+    @Test
+    void deleteCustomerByIdFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/delete/9")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND)));
+    }
+
+    @Test
+    void deleteCustomerByIdParseFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/delete/WRONG")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
     }
 
 }

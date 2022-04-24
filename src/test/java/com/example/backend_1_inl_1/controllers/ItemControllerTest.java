@@ -7,6 +7,7 @@ import com.example.backend_1_inl_1.model.Item;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import com.example.backend_1_inl_1.repositories.ItemRepository;
 
+import com.example.backend_1_inl_1.repositories.OrderRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,12 +46,16 @@ class ItemControllerTest {
     @Autowired
     private CustomerRepository mockCustomerRepository;
 
+    @MockBean
+    @Autowired
+    private OrderRepository mockOrderRepository;
+
     @BeforeEach
     public void setMockMvc() {
-        Item p1 = new Item(1,"AlbumOne","ArtistOne", LocalDate.of(1981,6,4),"Visor",46);
-        Item p2 = new Item(2,"AlbumTwo","ArtistTwo", LocalDate.of(1982,6,4),"Visor",46);
-        Item p3 = new Item(3,"AlbumThree","ArtistThree", LocalDate.of(1983,6,4),"Visor",46);
-        Item p4 = new Item(4,"AlbumFour","ArtistFour", LocalDate.of(1984,6,4),"Visor",46);
+        Item item1 = new Item(1,"AlbumOne","ArtistOne", LocalDate.of(1981,6,4),"Visor",46);
+        Item item2 = new Item(2,"AlbumTwo","ArtistTwo", LocalDate.of(1982,6,4),"Visor",46);
+        Item item3 = new Item(3,"AlbumThree","ArtistThree", LocalDate.of(1983,6,4),"Visor",46);
+        Item item4 = new Item(4,"AlbumFour","ArtistFour", LocalDate.of(1984,6,4),"Visor",46);
 
         Customer customer1 = new Customer(1,"Eva","evaave@gmail.com","Lilla sällskapets väg 57", LocalDate.of(1965,3,15));
         Customer customer2 = new Customer(2,"Olle","ollis@gmail.com","Kungsgatan 34", LocalDate.of(1948,8,22));
@@ -61,10 +66,12 @@ class ItemControllerTest {
         when(mockCustomerRepository.findById(3L)).thenReturn(Optional.of(customer3));
         when(mockCustomerRepository.findAll()).thenReturn(Arrays.asList(customer1,customer2,customer3));
 
-        when(mockItemRepository.findById(1L)).thenReturn(Optional.of(p1));
-        when(mockItemRepository.findById(2L)).thenReturn(Optional.of(p2));
-        when(mockItemRepository.findAll()).thenReturn(Arrays.asList(p1,p2,p3));
-        when(mockItemRepository.findById(4L)).thenReturn(Optional.of(p4));
+        when(mockItemRepository.findById(1L)).thenReturn(Optional.of(item1));
+        when(mockItemRepository.findById(2L)).thenReturn(Optional.of(item2));
+        when(mockItemRepository.findById(3L)).thenReturn(Optional.of(item3));
+        when(mockItemRepository.findById(4L)).thenReturn(Optional.of(item4));
+        when(mockItemRepository.findAll()).thenReturn(Arrays.asList(item1,item2,item3));
+
     }
 
     @Test
@@ -97,7 +104,7 @@ class ItemControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/items/9")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is(ResponsMessage.PRODUCT_NOT_FOUND.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.PRODUCT_NOT_FOUND)));
     }
 
     @Test
@@ -105,7 +112,7 @@ class ItemControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/items/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
     }
 
     @Test
@@ -117,19 +124,19 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(item4)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(item4.getAlbumName() + ResponsMessage.PRODUCT_ADDED.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.productAdded(item4))));
     }
 
     @Test
     void buyItemSuccess() throws Exception {
-        Purchase purchase = new Purchase(2L,2L);
+        Purchase purchase = new Purchase(1L,1L);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/items/buy")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(purchase)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(ResponsMessage.ORDER_COMPLETE.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.ORDER_COMPLETE)));
     }
 
     @Test
@@ -141,7 +148,7 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(purchase)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(ResponsMessage.PRODUCT_NOT_FOUND.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.PRODUCT_NOT_FOUND)));
     }
 
     @Test
@@ -153,7 +160,7 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(purchase)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.CUSTOMER_NOT_FOUND)));
     }
 
     @Test
@@ -165,7 +172,33 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(purchase)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
-                .andExpect(jsonPath("$.response", is(ResponsMessage.NOTHING_FOUND.getMessage())));
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOTHING_FOUND)));
+    }
+
+    @Test
+    void deleteItemById() throws Exception {
+        Item item4 = new Item(4,"AlbumFour","ArtistFour", LocalDate.of(1984,6,4),"Visor",46);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/items/delete/4")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.productDeleted(item4))));
+    }
+
+    @Test
+    void deleteItemByIdFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/items/delete/9")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.PRODUCT_NOT_FOUND)));
+    }
+
+    @Test
+    void deleteItemByIdParseFail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/items/delete/WRONG")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is(ResponsMessage.NOT_A_NUMBER)));
     }
 
 }

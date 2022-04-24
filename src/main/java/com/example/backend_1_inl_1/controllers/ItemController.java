@@ -37,17 +37,17 @@ public class ItemController {
             long parsedId = Long.parseLong(id);
             return itemRepository.findById(parsedId).isPresent()
                     ? new Response<>(itemRepository.findById(parsedId).get())
-                    : new Response<>(ResponsMessage.PRODUCT_NOT_FOUND.getMessage());
+                    : new Response<>(ResponsMessage.PRODUCT_NOT_FOUND);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return new Response<>(ResponsMessage.NOT_A_NUMBER.getMessage());
+            return new Response<>(ResponsMessage.NOT_A_NUMBER);
         }
     }
 
     @PostMapping()
     public Response<String> addItem(@RequestBody Item item) {
         itemRepository.save(item);
-        return new Response<>(item.getAlbumName() + ResponsMessage.PRODUCT_ADDED.getMessage());
+        return new Response<>(ResponsMessage.productAdded(item));
     }
 
     @PostMapping("/buy")
@@ -61,16 +61,33 @@ public class ItemController {
             customer.addOrder(newOrder);
             customerRepository.save(customer);
 
-            return new Response<>(ResponsMessage.ORDER_COMPLETE.getMessage());
+            return new Response<>(ResponsMessage.ORDER_COMPLETE);
 
         } else if (customerRepository.findById(purchase.customerId()).isPresent()) {
-            return new Response<>(ResponsMessage.PRODUCT_NOT_FOUND.getMessage());
+            return new Response<>(ResponsMessage.PRODUCT_NOT_FOUND);
 
         } else if (itemRepository.findById(purchase.itemId()).isPresent()) {
-            return new Response<>(ResponsMessage.CUSTOMER_NOT_FOUND.getMessage());
+            return new Response<>(ResponsMessage.CUSTOMER_NOT_FOUND);
 
         } else {
-            return new Response<>(ResponsMessage.NOTHING_FOUND.getMessage());
+            return new Response<>(ResponsMessage.NOTHING_FOUND);
+        }
+    }
+
+    @GetMapping("/delete/{id}")
+    public Response<String> deleteItemById(@PathVariable String id) {
+        try {
+            long parsedId = Long.parseLong(id);
+            if (itemRepository.findById(parsedId).isPresent()) {
+                Item foundItem = itemRepository.findById(parsedId).get();
+                itemRepository.delete(foundItem);
+                return new Response<>(ResponsMessage.productDeleted(foundItem));
+            } else {
+                return new Response<>(ResponsMessage.PRODUCT_NOT_FOUND);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return new Response<>(ResponsMessage.NOT_A_NUMBER);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.example.backend_1_inl_1.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
 
     @Id
@@ -21,8 +25,6 @@ public class Item {
     private String genre;
     private int albumLength;
 
-    public Item() {}
-
     public Item(String albumName, String artist, LocalDate releaseDate, String genre, int albumLength) {
         this.albumName = albumName;
         this.artist = artist;
@@ -31,12 +33,4 @@ public class Item {
         this.albumLength = albumLength;
     }
 
-    public Item(long id, String albumName, String artist, LocalDate releaseDate, String genre, int albumLength) {
-        this.id = id;
-        this.albumName = albumName;
-        this.artist = artist;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.albumLength = albumLength;
-    }
 }
