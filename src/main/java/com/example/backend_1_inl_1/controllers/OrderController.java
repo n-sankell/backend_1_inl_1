@@ -20,7 +20,6 @@ public class OrderController {
 
     @GetMapping()
     public Response<Iterable<ItemOrder>> getAllOrders() {
-        orderRepository.findAll().forEach(System.out::println);
         return new Response<>(orderRepository.findAll());
     }
 
