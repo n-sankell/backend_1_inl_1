@@ -33,4 +33,9 @@ public class Item {
         this.albumLength = albumLength;
     }
 
+    @Override
+    public String toString() {
+        return artist + " - " + albumName;
+    }
+
 }
