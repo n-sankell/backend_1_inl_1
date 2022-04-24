@@ -110,6 +110,7 @@ class ItemControllerTest {
     @Test
     void getItemByIdParseFail() throws Exception {
         System.out.println("Test - getItemByIdParseFail - This test prints a stacktrace for NumberFormatException");
+
         mockMvc.perform(MockMvcRequestBuilders.get("/items/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -126,6 +127,7 @@ class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
                 .andExpect(jsonPath("$.response", is(ResponsMessage.productAdded(item4))));
+
         System.out.println("Test - addItem return: " + ResponsMessage.productAdded(item4));
     }
 
@@ -185,6 +187,7 @@ class ItemControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", is(ResponsMessage.productDeleted(item4))));
+
         System.out.println("Test - deleteItemById return: " + ResponsMessage.productDeleted(item4));
     }
 
@@ -199,6 +202,7 @@ class ItemControllerTest {
     @Test
     void deleteItemByIdParseFail() throws Exception {
         System.out.println("Test - deleteItemByIdParseFail - This test prints a stacktrace for NumberFormatException");
+
         mockMvc.perform(MockMvcRequestBuilders.get("/items/delete/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -86,6 +86,7 @@ class CustomerControllerTest {
     @Test
     void getCustomerByIdParseFail() throws Exception {
         System.out.println("Test - getCustomerByIdParseFail - This test prints a stacktrace for NumberFormatException");
+
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -102,6 +103,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))
                 .andExpect(jsonPath("$.response", is(ResponsMessage.customerAdded(customer4))));
+
         System.out.println("Test - addCustomer return: " + ResponsMessage.customerAdded(customer4));
     }
 
@@ -125,6 +127,7 @@ class CustomerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", is(ResponsMessage.customerDeleted(customer3))));
+
         System.out.println("Test - deleteCustomerById return: " + ResponsMessage.customerDeleted(customer3));
     }
 
@@ -139,6 +142,7 @@ class CustomerControllerTest {
     @Test
     void deleteCustomerByIdParseFail() throws Exception {
         System.out.println("Test - deleteCustomerByIdParseFail - This test prints a stacktrace for NumberFormatException");
+
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/delete/WRONG")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
