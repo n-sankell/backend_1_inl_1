@@ -3,7 +3,6 @@ package com.example.backend_1_inl_1.controllers;
 import com.example.backend_1_inl_1.dto.ResponsMessage;
 import com.example.backend_1_inl_1.model.Customer;
 import com.example.backend_1_inl_1.dto.Response;
-import com.example.backend_1_inl_1.model.Item;
 import com.example.backend_1_inl_1.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "https://n-sankell.github.io")
 public class CustomerController {
 
+    private final CustomerRepository customerRepository;
+
     @Autowired
-    CustomerRepository customerRepository;
+    public CustomerController (CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @GetMapping()
     public Response<Iterable<Customer>> getAllCustomers() {

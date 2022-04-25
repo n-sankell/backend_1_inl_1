@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "https://n-sankell.github.io")
 public class OrderController {
 
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+
     @Autowired
-    OrderRepository orderRepository;
-    @Autowired
-    CustomerRepository customerRepository;
+    public OrderController(OrderRepository orderRepository, CustomerRepository customerRepository) {
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+    }
 
     @GetMapping()
     public Response<Iterable<ItemOrder>> getAllOrders() {
