@@ -17,14 +17,16 @@ import java.time.LocalDate;
 @CrossOrigin(origins = "https://n-sankell.github.io")
 public class ItemController {
 
-    @Autowired
-    ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
-    OrderRepository orderRepository;
+    public ItemController(ItemRepository itemRepository, OrderRepository orderRepository, CustomerRepository customerRepository) {
+        this.itemRepository = itemRepository;
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+    }
 
     @GetMapping()
     public Response<Iterable<Item>> getAllItems() {
